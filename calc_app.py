@@ -105,6 +105,7 @@ class CalculatorApp(ft.Container):
                         ExtraActionButton(text="sin", button_clicked=self.button_clicked),
                         ExtraActionButton(text="cos", button_clicked=self.button_clicked),
                         ExtraActionButton(text="tan", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="x^y", button_clicked=self.button_clicked),  # x^yボタンを追加
                     ]
                 ),
             ]
@@ -129,15 +130,12 @@ class CalculatorApp(ft.Container):
                 self.result.value = self.result.value + data
 
         # 演算子の処理
-        elif data in ("+", "-", "*", "/"):
-            self.result.value = self.calculate(
-                self.operand1, float(self.result.value), self.operator
-            )
-            self.operator = data
-            if self.result.value == "Error":
-                self.operand1 = "0"
+        elif data in ("+", "-", "*", "/", "x^y"):
+            if data == "x^y":
+                self.operator = "**"  # Exponentiation operator in Python
             else:
-                self.operand1 = float(self.result.value)
+                self.operator = data
+            self.operand1 = float(self.result.value)
             self.new_operand = True
 
         # イコール（計算結果の表示）
@@ -199,6 +197,8 @@ class CalculatorApp(ft.Container):
                 return "Error"  # 0除算エラー
             else:
                 return self.format_number(operand1 / operand2)
+        elif operator == "**":
+            return self.format_number(operand1 ** operand2)  # Exponentiation calculation
 
     # 状態リセット処理
     def reset(self):
@@ -214,4 +214,4 @@ def main(page: ft.Page):
     page.add(calc)  # ページに追加
 
 
-ft.app(target=main)  # アプリケーションの実
+ft.app(target=main)  # アプリケーションの実行
