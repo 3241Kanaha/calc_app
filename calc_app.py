@@ -1,5 +1,5 @@
-import flet as ft
-import math  # 三角関数用ライブラリ
+import flet as ft  # Fletライブラリのインポート
+import math  # 数学関数用ライブラリ
 
 # 数字ボタンや操作ボタンの基本クラス
 class CalcButton(ft.ElevatedButton):
@@ -100,12 +100,21 @@ class CalculatorApp(ft.Container):
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
                 ),
-                ft.Row(  # 三角関数ボタンの行
+                ft.Row(  # 三角関数・平方根ボタンの行
                     controls=[
                         ExtraActionButton(text="sin", button_clicked=self.button_clicked),
                         ExtraActionButton(text="cos", button_clicked=self.button_clicked),
                         ExtraActionButton(text="tan", button_clicked=self.button_clicked),
+<<<<<<< HEAD
                         ExtraActionButton(text="x^y", button_clicked=self.button_clicked),  # x^yボタンを追加
+=======
+                        ExtraActionButton(text="√", button_clicked=self.button_clicked),  # 平方根ボタン
+                    ]
+                ),
+                ft.Row(  # 階乗ボタンの行
+                    controls=[
+                        ExtraActionButton(text="!", button_clicked=self.button_clicked),  # 階乗ボタン
+>>>>>>> 47ede84936ef7afddef0c19b88f8a95d7e93d08b
                     ]
                 ),
             ]
@@ -175,6 +184,30 @@ class CalculatorApp(ft.Container):
                 self.result.value = "Error"
             self.reset()
 
+        # 平方根（√）の処理
+        elif data == "√":
+            try:
+                value = float(self.result.value)
+                if value < 0:  # 負の数の場合はエラーを表示
+                    self.result.value = "Error"
+                else:
+                    self.result.value = self.format_number(math.sqrt(value))
+            except ValueError:
+                self.result.value = "Error"  # 不正な入力の場合エラーを表示
+            self.reset()
+
+        # 階乗（!）の処理
+        elif data == "!":
+            try:
+                value = int(float(self.result.value))  # 階乗計算のため整数に変換
+                if value < 0:
+                    self.result.value = "Error"  # 負の数に対する階乗はエラー
+                else:
+                    self.result.value = self.format_number(math.factorial(value))
+            except ValueError:
+                self.result.value = "Error"  # 不正な入力の場合エラーを表示
+            self.reset()
+
         self.update()  # 表示を更新
 
     # 数値のフォーマット処理（整数か小数かを判別）
@@ -214,4 +247,8 @@ def main(page: ft.Page):
     page.add(calc)  # ページに追加
 
 
+<<<<<<< HEAD
 ft.app(target=main)  # アプリケーションの実行
+=======
+ft.app(target=main)
+>>>>>>> 47ede84936ef7afddef0c19b88f8a95d7e93d08b
