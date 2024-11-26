@@ -1,5 +1,5 @@
 import flet as ft  # Fletライブラリのインポート
-import math  # 三角関数用ライブラリ
+import math  # 数学関数用ライブラリ
 
 # 数字ボタンや操作ボタンの基本クラス
 class CalcButton(ft.ElevatedButton):
@@ -100,12 +100,12 @@ class CalculatorApp(ft.Container):
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
                 ),
-                ft.Row(  # 三角関数ボタンの行
+                ft.Row(  # 三角関数・平方根ボタンの行
                     controls=[
                         ExtraActionButton(text="sin", button_clicked=self.button_clicked),
                         ExtraActionButton(text="cos", button_clicked=self.button_clicked),
                         ExtraActionButton(text="tan", button_clicked=self.button_clicked),
-                        ExtraActionButton(text="x^y", button_clicked=self.button_clicked),  # x^yボタンを追加
+                        ExtraActionButton(text="√", button_clicked=self.button_clicked),  # 平方根ボタン
                     ]
                 ),
             ]
@@ -173,6 +173,18 @@ class CalculatorApp(ft.Container):
                     )
             except ValueError:
                 self.result.value = "Error"
+            self.reset()
+
+        # 平方根（√）の処理
+        elif data == "√":
+            try:
+                value = float(self.result.value)
+                if value < 0:  # 負の数の場合はエラーを表示
+                    self.result.value = "Error"
+                else:
+                    self.result.value = self.format_number(math.sqrt(value))
+            except ValueError:
+                self.result.value = "Error"  # 不正な入力の場合エラーを表示
             self.reset()
 
         self.update()  # 表示を更新
