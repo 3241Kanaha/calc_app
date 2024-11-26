@@ -108,6 +108,11 @@ class CalculatorApp(ft.Container):
                         ExtraActionButton(text="√", button_clicked=self.button_clicked),  # 平方根ボタン
                     ]
                 ),
+                ft.Row(  # 階乗ボタンの行
+                    controls=[
+                        ExtraActionButton(text="!", button_clicked=self.button_clicked),  # 階乗ボタン
+                    ]
+                ),
             ]
         )
 
@@ -187,6 +192,18 @@ class CalculatorApp(ft.Container):
                 self.result.value = "Error"  # 不正な入力の場合エラーを表示
             self.reset()
 
+        # 階乗（!）の処理
+        elif data == "!":
+            try:
+                value = int(float(self.result.value))  # 階乗計算のため整数に変換
+                if value < 0:
+                    self.result.value = "Error"  # 負の数に対する階乗はエラー
+                else:
+                    self.result.value = self.format_number(math.factorial(value))
+            except ValueError:
+                self.result.value = "Error"  # 不正な入力の場合エラーを表示
+            self.reset()
+
         self.update()  # 表示を更新
 
     # 数値のフォーマット処理（整数か小数かを判別）
@@ -226,4 +243,4 @@ def main(page: ft.Page):
     page.add(calc)  # ページに追加
 
 
-ft.app(target=main)  # アプリケーションの実行
+ft.app(target=main)
