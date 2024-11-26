@@ -1,5 +1,5 @@
 import flet as ft
-
+import math  # 三角関数用ライブラリ
 
 # 数字ボタンや操作ボタンの基本クラス
 class CalcButton(ft.ElevatedButton):
@@ -100,6 +100,13 @@ class CalculatorApp(ft.Container):
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
                 ),
+                ft.Row(  # 三角関数ボタンの行
+                    controls=[
+                        ExtraActionButton(text="sin", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="cos", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="tan", button_clicked=self.button_clicked),
+                    ]
+                ),
             ]
         )
 
@@ -115,7 +122,7 @@ class CalculatorApp(ft.Container):
 
         # 数字または小数点の処理
         elif data in ("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."):
-            if self.result.value == "0" or self.new_operand == True:
+            if self.result.value == "0" or self.new_operand:
                 self.result.value = data
                 self.new_operand = False
             else:
@@ -134,25 +141,41 @@ class CalculatorApp(ft.Container):
             self.new_operand = True
 
         # イコール（計算結果の表示）
-        elif data in ("="):
+        elif data == "=":
             self.result.value = self.calculate(
                 self.operand1, float(self.result.value), self.operator
             )
             self.reset()
 
         # パーセント処理
-        elif data in ("%"):
+        elif data == "%":
             self.result.value = float(self.result.value) / 100
             self.reset()
 
         # +/-（符号の切り替え）
-        elif data in ("+/-"):
+        elif data == "+/-":
             if float(self.result.value) > 0:
                 self.result.value = "-" + str(self.result.value)
             elif float(self.result.value) < 0:
                 self.result.value = str(
                     self.format_number(abs(float(self.result.value)))
                 )
+
+        # 三角関数の処理
+        elif data in ("sin", "cos", "tan"):
+            try:
+                angle = math.radians(float(self.result.value))  # ラジアンに変換
+                if data == "sin":
+                    self.result.value = self.format_number(math.sin(angle))
+                elif data == "cos":
+                    self.result.value = self.format_number(math.cos(angle))
+                elif data == "tan":
+                    self.result.value = (
+                        "Error" if math.isclose(math.cos(angle), 0) else self.format_number(math.tan(angle))
+                    )
+            except ValueError:
+                self.result.value = "Error"
+            self.reset()
 
         self.update()  # 表示を更新
 
@@ -161,7 +184,7 @@ class CalculatorApp(ft.Container):
         if num % 1 == 0:
             return int(num)
         else:
-            return num
+            return round(num, 6)  # 小数点以下6桁まで丸める
 
     # 計算処理
     def calculate(self, operand1, operand2, operator):
@@ -191,4 +214,4 @@ def main(page: ft.Page):
     page.add(calc)  # ページに追加
 
 
-ft.app(target=main)  # アプリケーションの実行
+ft.app(target=main)  # アプリケーションの実
