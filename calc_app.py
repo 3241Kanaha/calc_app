@@ -1,4 +1,4 @@
-import flet as ft
+import flet as ft  # Fletライブラリのインポート
 import math  # 三角関数用ライブラリ
 
 # 数字ボタンや操作ボタンの基本クラス
