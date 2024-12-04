@@ -105,12 +105,16 @@ class CalculatorApp(ft.Container):
                         ExtraActionButton(text="sin", button_clicked=self.button_clicked),
                         ExtraActionButton(text="cos", button_clicked=self.button_clicked),
                         ExtraActionButton(text="tan", button_clicked=self.button_clicked),
+<<<<<<< HEAD
+                        ExtraActionButton(text="x^y", button_clicked=self.button_clicked),  # x^yボタンを追加
+=======
                         ExtraActionButton(text="√", button_clicked=self.button_clicked),  # 平方根ボタン
                     ]
                 ),
                 ft.Row(  # 階乗ボタンの行
                     controls=[
                         ExtraActionButton(text="!", button_clicked=self.button_clicked),  # 階乗ボタン
+>>>>>>> 47ede84936ef7afddef0c19b88f8a95d7e93d08b
                     ]
                 ),
             ]
@@ -243,4 +247,8 @@ def main(page: ft.Page):
     page.add(calc)  # ページに追加
 
 
+<<<<<<< HEAD
+ft.app(target=main)  # アプリケーションの実行
+=======
 ft.app(target=main)
+>>>>>>> 47ede84936ef7afddef0c19b88f8a95d7e93d08b
